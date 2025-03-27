@@ -6,14 +6,13 @@ const Table = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5;
 
-  const sortedAsc = () => {
-    const sortedDat = [...users]?.sort((a, b) => a.id - b.id);
-    setUsers(sortedDat);
-    setCurrentPage(1);
-  };
-
-  const sortedDesc = () => {
-    const sortedDat = [...users]?.sort((a, b) => b.id - a.id);
+  const handleSort = (type) => {
+    let sortedDat = [];
+    if (type === "asc") {
+      sortedDat = [...users]?.sort((a, b) => a.id - b.id);
+    } else {
+      sortedDat = [...users]?.sort((a, b) => b.id - a.id);
+    }
     setUsers(sortedDat);
     setCurrentPage(1);
   };
@@ -31,6 +30,7 @@ const Table = ({ data }) => {
   //   search logic
   useEffect(() => {
     const timer = setTimeout(() => {
+      setCurrentPage(1);
       const filteredData = data?.filter((item) => {
         return item?.firstName?.toLowerCase()?.includes(search?.toLowerCase());
       });
@@ -48,10 +48,10 @@ const Table = ({ data }) => {
         className="mb-4 p-2 border border-gray-300 rounded w-full"
         onChange={(e) => setSearch(e.target.value)}
       />
-      
+
       <div className="flex justify-end  items-center mb-4">
         <p className="text-sm mr-2">Sort By Id</p> :
-        <button onClick={() => sortedAsc()}>
+        <button onClick={() => handleSort("asc")}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -67,7 +67,7 @@ const Table = ({ data }) => {
             />
           </svg>
         </button>
-        <button onClick={() => sortedDesc()}>
+        <button onClick={() => handleSort("desc")}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

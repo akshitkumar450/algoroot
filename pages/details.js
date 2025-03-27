@@ -21,7 +21,7 @@ function Details() {
     <div className="min-w-max">
       <Navbar />
       <section className="flex min-w-max">
-        <div className="flex-[0.2] bg-gray-500 ">
+        <div className="flex-[0.2] bg-gray-600 ">
           <Sidebar/>
         </div>
         <div  className="flex-[0.8]">

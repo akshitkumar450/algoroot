@@ -1,23 +1,23 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-const Form = ({ heading, ctaText, isSignup }) => {
+const Form = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const router = useRouter();
-
+  const [isSignup , setIsSignup] = useState(false)
   const onSubmit = (data) => {
     if (isSignup) {
       const getUsers = JSON.parse(localStorage.getItem("users")) || [];
       const userPresent = getUsers.find((user) => user.email === data.email);
       if (userPresent) {
-        toast.error("User Email already exists");
+        toast.error("Email already registered");
         return;
       }
       toast.success("User registered successfully");
@@ -41,10 +41,10 @@ const Form = ({ heading, ctaText, isSignup }) => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen ">
+    <div className="flex justify-center items-center min-h-screen mx-10 md: mx-0 ">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full sm:w-96 md:w-80 lg:w-96 xl:w-96">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
-          {heading}
+          {isSignup ? "Sign up" : "Login"}
         </h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -133,28 +133,31 @@ const Form = ({ heading, ctaText, isSignup }) => {
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200 ease-in-out"
+            className="w-full bg-[#EE2C3C] text-white py-3 rounded-lg  focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200 ease-in-out"
           >
-            {ctaText}
+            {isSignup ? "Sign up" : "Login"}
           </button>
 
           <div className="text-center mt-4">
             {isSignup ? (
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 cursor-pointer">
                 Already have an account?{" "}
-                <Link href="/" className="text-indigo-600 hover:underline">
+                <span
+                onClick={() => setIsSignup(false)}
+                
+                 className="text-indigo-600 hover:underline">
                   Login
-                </Link>
+                </span>
               </p>
             ) : (
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 cursor-pointer">
                 Don't have an account?{" "}
-                <Link
-                  href="/signup"
+                <span
+                onClick={() => setIsSignup(true)}
                   className="text-indigo-600 hover:underline"
                 >
                   Sign up
-                </Link>
+                </span>
               </p>
             )}
           </div>

@@ -1,7 +1,8 @@
+import useOutsideDetect from "@/hooks/useOutSideDetect";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -32,6 +33,10 @@ const Navbar = () => {
     setUser(JSON.parse(sessionStorage.getItem("user")));
   }, []);
 
+  const dropdownRef = useRef(null);
+  useOutsideDetect(dropdownRef, () => {
+    setDropdownOpen(false)
+  })
   return (
     <nav className="bg-gray-800 p-2 px-12 md:p-4 md:px-20 ">
       <div className=" mx-auto flex items-center justify-between">
@@ -81,7 +86,7 @@ const Navbar = () => {
 
           {/* Dropdown Menu */}
           {dropdownOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 text-gray-800">
+            <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 text-gray-800" ref={dropdownRef}>
               <div className="px-4 py-2 font-semibold">{user?.name}</div>
               <div className="px-4 py-2 text-sm text-gray-500">
                 {user?.email}
@@ -97,7 +102,7 @@ const Navbar = () => {
                 onClick={handleDeleteAccount}
                 className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
               >
-                delete account
+                Delete Account
               </button>
             </div>
           )}
